@@ -3,6 +3,7 @@
 import SearchBox from "@/components/SearchBox/SearchBox"
 import Pagination from "@/components/Pagination/Pagination";
 import NoteList from "@/components/NoteList/NoteList"
+import { useEffect } from "react";
 import { fetchNotes } from "@/lib/api";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { useDebouncedCallback } from 'use-debounce';
@@ -14,7 +15,11 @@ import ErrorMessage from "@/components/ErrorMessage/ErrorMessage";
 import ErrorRequest from "@/components/ErrorRequest/ErrorRequest";
 import NoteForm from "@/components/NoteForm/NoteForm";
 
-function NotesClient() {
+type Props = {
+  tag: string;
+}
+
+function NotesClient({tag}: Props) {
 
   const [inputValue, setinputValue] = useState('');
   const [page, setPage] = useState(1);
@@ -24,11 +29,16 @@ function NotesClient() {
   const closeModal = () => setIsModalOpen(false);
 
   const {data, isSuccess, isLoading, isFetching, isError} = useQuery({
-    queryKey: ['notes', inputValue, page],
-      queryFn: () => fetchNotes({ query: inputValue, page: page }),
+    queryKey: ['notes', inputValue, page, tag],
+      queryFn: () => fetchNotes({ query: inputValue, page: page, ...(tag !== 'All' ? { tag } : {})}),
       refetchOnMount: false,
     placeholderData: keepPreviousData,
   });
+
+  useEffect(() => {
+    setPage(1);
+  }, [tag]);
+  
 
   const updateSearchQuery = useDebouncedCallback(
     (searchTopic: string) => {
@@ -74,7 +84,4 @@ function NotesClient() {
 }
 
 export default NotesClient
-
-
-
 

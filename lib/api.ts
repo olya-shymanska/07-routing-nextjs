@@ -11,6 +11,7 @@ interface GetTasksResponse {
 interface fetchNoteProps {
     query: string,
     page: number,
+    tag?: string,
 }
 
 const config: { headers: { Authorization: string } } = {
@@ -19,13 +20,14 @@ const config: { headers: { Authorization: string } } = {
     },
   };
 
-export const fetchNotes = async ({query, page}: fetchNoteProps): Promise<GetTasksResponse> => {
+export const fetchNotes = async ({query, page, tag}: fetchNoteProps): Promise<GetTasksResponse> => {
 
     const response = await axios.get<GetTasksResponse>("https://notehub-public.goit.study/api/notes",
         {
             ...config,
             params: {
                 search: query,
+                tag: tag,
                 page,
                 perPage: 10,
             }
