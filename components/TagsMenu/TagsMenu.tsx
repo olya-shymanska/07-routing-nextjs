@@ -3,19 +3,19 @@ import Link from 'next/link';
 import css from './TagsMenu.module.css'
 import { useState } from 'react';
 
-const tags: string[] = ['All','Work', 'Personal', 'Meeting', 'Shopping', 'Todo']; 
+const tags: string[] = ['All', 'Todo', 'Work', 'Personal', 'Meeting', 'Shopping'];
 
 export default function TagsMenu() {
     const [isOpen, setIsOpen] = useState(false); 
 
   //const toggleMenu = () => setIsOpen((prev) => !prev);
   
-  const openMenu = () => setIsOpen(true);
+  const toggleMenu = () => setIsOpen((prev) => !prev);
   const closeMenu = () => setIsOpen(false);
 
     return (
     <div className={css.menuContainer}>
-  <button className={css.menuButton} onClick={openMenu}>
+  <button className={css.menuButton} onClick={toggleMenu}>
     Notes ▾
             </button> 
             {isOpen && (<ul className={css.menuList}>
