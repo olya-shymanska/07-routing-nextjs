@@ -6,8 +6,13 @@ import { getSingleNote } from '@/lib/api'
 import Modal from '@/components/Modal/Modal'
 import { useRouter } from 'next/navigation'
 
-const NotePreview = () => {
-    const { id } = useParams<{ id: string }>()
+type NotePreviewProps = {
+    propId?: string; 
+  }
+
+const NotePreview = ({propId}:NotePreviewProps) => {
+    const params  = useParams<{ id: string }>()
+    const id = propId ?? params.id
     const router = useRouter()
     
     const {data, isLoading, isError,} = useQuery({
